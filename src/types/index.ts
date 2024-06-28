@@ -16,9 +16,19 @@ export interface UserProps {
 }
 
 export interface PostProps {
+  _id: string;
   creator: string;
   post: string;
   likes: string[];
   comments: string[];
+  createdAt: string;
+}
+
+export interface CommentProps {
+  _id: string;
+  creator: string;
+  postId: string;
+  comments: string;
+  likes: string[];
   createdAt: string;
 }

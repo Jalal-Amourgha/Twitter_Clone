@@ -1,3 +1,3 @@
 import comment from "./comment.png";
-
-export { comment };
+import repost from "./repost.png";
+export { comment, repost };

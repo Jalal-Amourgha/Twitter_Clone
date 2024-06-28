@@ -22,6 +22,7 @@ export async function POST(req) {
       bio: "",
       img: "https://files.edgestore.dev/kbupit1ufke42s4x/myPublicImages/_public/c8d0630f-b76d-4a47-a879-0525729eabbc.jpg",
       banner: "",
+      bookmarks: [],
     });
 
     return NextResponse.json({ message: "User Registed" }, { status: 201 });

@@ -4,9 +4,9 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useAppContext } from "@/context";
 import Image from "next/image";
 import UserInfo from "@/components/UserInfo";
-import { UserHeader } from "@/components/UserHeader";
 import EditProfile from "@/components/EditProfile";
 import { useState } from "react";
+import { Header } from "@/components/Header";
 
 const MyProfile = () => {
   const { userData } = useAppContext();
@@ -18,7 +18,7 @@ const MyProfile = () => {
 
   return (
     <>
-      <UserHeader username={userData.username} />
+      <Header title={userData.username} />
 
       {/* User -  Bannner */}
       <div className="w-full h-[250px] relative">

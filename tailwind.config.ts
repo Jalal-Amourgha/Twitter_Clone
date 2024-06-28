@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        red: "#f91880",
+        green: "#00ba7c",
+        blue: "#1c98eb",
+      },
       borderWidth: {
         1: "1px",
       },

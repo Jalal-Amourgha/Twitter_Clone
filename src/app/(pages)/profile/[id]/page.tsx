@@ -1,6 +1,6 @@
 "use client";
 
-import { UserHeader } from "@/components/UserHeader";
+import { Header } from "@/components/Header";
 import UserInfo from "@/components/UserInfo";
 import { useAppContext } from "@/context";
 import { UserProps } from "@/types";
@@ -45,7 +45,7 @@ const UserProfile = ({ params }: PageProps) => {
 
   return (
     <>
-      <UserHeader username={selectedUser.username} />
+      <Header title={selectedUser.username} />
 
       {/* User -  Bannner */}
       <div className="w-full h-[250px] relative">

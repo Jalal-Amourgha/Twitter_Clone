@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 
-export const UserHeader = ({ username }: { username: string }) => {
+export const Header = ({ title }: { title: string }) => {
   const router = useRouter();
   return (
     <div
@@ -12,7 +12,7 @@ export const UserHeader = ({ username }: { username: string }) => {
       onClick={() => router.back()}
     >
       <FaArrowLeftLong size={20} />{" "}
-      <span className="text-2xl font-bold">{username}</span>
+      <span className="text-2xl font-bold">{title}</span>
     </div>
   );
 };

@@ -33,7 +33,10 @@ const UserSchema = new Schema(
       type: Array,
     },
     following: {
-      type: Object,
+      type: Array,
+    },
+    bookmarks: {
+      type: Array,
     },
   },
   { timestamps: true }

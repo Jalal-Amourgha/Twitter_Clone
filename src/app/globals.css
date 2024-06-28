@@ -17,3 +17,16 @@ input {
 .blue-btn {
   @apply bg-sky-500 text-white text-xl  py-2 px-4 rounded-full;
 }
+
+.blue__shadow {
+  box-shadow: 0px 0 0 50px rgb(30, 145, 221);
+}
+
+.link__shadow {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #737373 !important;
+}

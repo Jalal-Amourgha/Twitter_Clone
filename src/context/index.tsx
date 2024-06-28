@@ -13,13 +13,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [reFetchUsers, setReFetchUsers] = useState(1);
   const [reFetchPosts, setReFetchPosts] = useState(1);
   const [createTweet, setCreateTweet] = useState(false);
+  const [showCreateComment, setShowCreateComment] = useState(false);
+  const [reFetchComment, setReFetchComment] = useState(0);
   const { data: session } = useSession();
 
   const fetchPosts = async () => {
     const data = await fetch(`/api/post`);
-
     const res = await data.json();
-    console.log(res);
+
     return setPosts(res);
   };
 
@@ -57,12 +58,16 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         reFetchUsers,
         reFetchPosts,
         createTweet,
+        showCreateComment,
+        reFetchComment,
         setPosts,
         setUsers,
         setUserData,
         setReFetchUsers,
         setReFetchPosts,
         setCreateTweet,
+        setShowCreateComment,
+        setReFetchComment,
       }}
     >
       {children}
