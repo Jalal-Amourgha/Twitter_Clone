@@ -4,8 +4,6 @@ import { connectToDB } from "@/utils/database";
 export const POST = async (request) => {
   const { userId, post } = await request.json();
 
-  console.log(`hada ana ajalal dw ${userId}`);
-
   try {
     await connectToDB();
 

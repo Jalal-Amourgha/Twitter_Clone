@@ -4,6 +4,7 @@ import "./globals.css";
 import Layout from "@/components/Layout";
 import { AuthProvider } from "./Providers";
 import { AppWrapper } from "@/context";
+import { EdgeStoreProvider } from "@/utils/edgestore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <AppWrapper>
-            <Layout> {children}</Layout>
-          </AppWrapper>
+          <EdgeStoreProvider>
+            <AppWrapper>
+              <Layout> {children}</Layout>
+            </AppWrapper>
+          </EdgeStoreProvider>
         </AuthProvider>
       </body>
     </html>

@@ -20,10 +20,6 @@ const LoginForm = ({ closeBtn, handleRegister }: LoginFormProps) => {
         password,
         redirect: false,
       });
-
-      if (res?.ok) {
-        console.log("allo");
-      }
     } catch (error) {
       console.error("Error during login:", error);
       console.log("An unexpected error occurred. Please try again.");

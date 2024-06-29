@@ -59,7 +59,7 @@ const SearchPage = () => {
                 {user.name}
               </h1>
               <p>{user.username}</p>
-              {user.followers.includes(userData._id) ? (
+              {userData && user.followers.includes(userData._id) ? (
                 <div className="flex items-center gap-1">
                   <FaUser size={15} /> <p>Following</p>
                 </div>

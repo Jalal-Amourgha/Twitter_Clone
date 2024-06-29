@@ -24,19 +24,24 @@ export const PATCH = async (request, { params }) => {
   try {
     await connectToDB();
 
-    console.log(params.id);
-
     // Find the existing prompt by ID
     const userInfo = await User.findOne({
       _id: params.id,
     });
 
-    console.log(type, items);
     if (!userInfo) {
       return new Response("User not found", { status: 404 });
     }
 
     if (type === "user-info") {
+      if (items.newImg) {
+        userInfo.img = items.newImg;
+      }
+
+      if (items.newBanner) {
+        userInfo.banner = items.newBanner;
+      }
+
       userInfo.name = items.newName;
       userInfo.username = items.newUsername;
       userInfo.bio = items.newBio;

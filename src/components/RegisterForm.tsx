@@ -34,14 +34,6 @@ const RegisterForm = ({ closeBtn, handleLogin }: RegisterFormProps) => {
           password,
         }),
       });
-
-      if (res.ok) {
-        console.log("all good in the hood");
-        // const form = e.target;
-        // form.reset();
-      } else {
-        console.log("This email is already taken");
-      }
     } catch (error) {
       console.log(error);
     } finally {

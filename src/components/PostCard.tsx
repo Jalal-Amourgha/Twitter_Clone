@@ -44,7 +44,7 @@ export const HomePostCard = ({ post }: any) => {
 
   const handleLikePost = async (postId: string, userId: string) => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
 
     try {
@@ -65,7 +65,7 @@ export const HomePostCard = ({ post }: any) => {
 
   const handleRePost = async (postId: string, userId: string) => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
     try {
       const response = await fetch(`/api/post`, {
@@ -85,7 +85,7 @@ export const HomePostCard = ({ post }: any) => {
 
   const handleSaveToBookmark = async (postId: string, userId: string) => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
     try {
       const response = await fetch(`/api/post`, {
@@ -105,7 +105,7 @@ export const HomePostCard = ({ post }: any) => {
 
   const handleCreateComment = () => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
 
     setShowCreateComment(true);
@@ -236,7 +236,7 @@ export const PostCard = ({ postId, userId }: any) => {
 
   const handleLikePost = async (postId: string, userId: string) => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
     try {
       const response = await fetch(`/api/post`, {
@@ -256,7 +256,7 @@ export const PostCard = ({ postId, userId }: any) => {
 
   const handleRePost = async (postId: string, userId: string) => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
     try {
       const response = await fetch(`/api/post`, {
@@ -276,7 +276,7 @@ export const PostCard = ({ postId, userId }: any) => {
 
   const handleSaveToBookmark = async (postId: string, userId: string) => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
     try {
       const response = await fetch(`/api/post`, {
@@ -296,7 +296,7 @@ export const PostCard = ({ postId, userId }: any) => {
 
   const handleCreateComment = () => {
     if (!session?.user?.email) {
-      return alert("sir f7alk");
+      return;
     }
 
     setShowCreateComment(true);

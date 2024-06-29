@@ -9,14 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@edgestore/react": "^0.1.7",
+    "@edgestore/server": "^0.1.7",
     "bcryptjs": "^2.4.3",
     "date-fns": "^3.6.0",
+    "lucide-react": "^0.399.0",
     "mongoose": "^8.4.4",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^5.2.1"
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^5.2.1",
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
