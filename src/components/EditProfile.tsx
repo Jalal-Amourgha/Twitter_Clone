@@ -17,9 +17,6 @@ const EditProfile = ({ closeBtn, userData }: EditProfileProps) => {
   const { edgestore } = useEdgeStore();
   const [file1, setFile1] = useState<File>();
   const [file2, setFile2] = useState<File>();
-  const [bannerLink, setBannerLink] = useState("");
-  const [imgLink, setImgLink] = useState("");
-
   const [name, setName] = useState(userData.name);
   const [username, setUserame] = useState(userData.username);
   const [bio, setBio] = useState(userData.bio);

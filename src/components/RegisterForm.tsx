@@ -56,11 +56,6 @@ const RegisterForm = ({ closeBtn, handleLogin }: RegisterFormProps) => {
 
         <form onSubmit={handleSubmit}>
           <input
-            type="email"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
             type="text"
             placeholder="Name"
             onChange={(e) => setName(e.target.value)}
@@ -69,6 +64,11 @@ const RegisterForm = ({ closeBtn, handleLogin }: RegisterFormProps) => {
             type="text"
             placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"

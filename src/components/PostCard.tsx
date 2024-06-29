@@ -5,8 +5,8 @@ import { PostProps, UserProps } from "@/types";
 import Image from "next/image";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import {
-  IoHeartOutline,
-  IoHeart,
+  IoPencil,
+  IoTrashOutline,
   IoBookmarkOutline,
   IoBookmark,
 } from "react-icons/io5";
@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CreateComment, PostComment } from "./CreateComment";
 import { useSession } from "next-auth/react";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 
 const handleCreatedAt = (date: string) => {
   return formatDistanceToNowStrict(new Date(date));
@@ -26,7 +27,7 @@ const handleCreatedAt = (date: string) => {
 
 export const HomePostCard = ({ post }: any) => {
   const {
-    posts,
+    userData,
     users,
     reFetchPosts,
     setReFetchPosts,
@@ -37,6 +38,7 @@ export const HomePostCard = ({ post }: any) => {
   const [showCopy, setShowCopy] = useState(false);
   const router = useRouter();
   const { data: session } = useSession();
+  const [editPost, setEditPost] = useState(false);
 
   const viewPost = (postId: string, userId: string) => {
     return router.push(`/post/${postId}`);
@@ -103,6 +105,29 @@ export const HomePostCard = ({ post }: any) => {
     }
   };
 
+  const handleDeletePost = async (postId: string) => {
+    if (!session?.user?.email) {
+      console.log("No session found or user not logged in");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/post/${postId.toString()}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete post");
+      }
+      console.log("Post deleted successfully");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    } finally {
+      setEditPost(false);
+      setReFetchPosts(reFetchPosts + 1);
+    }
+  };
+
   const handleCreateComment = () => {
     if (!session?.user?.email) {
       return;
@@ -110,10 +135,11 @@ export const HomePostCard = ({ post }: any) => {
 
     setShowCreateComment(true);
   };
+
   return (
     <>
       <div
-        className="p-3 border-b-1 border-neutral-800"
+        className="p-3 border-b-1 border-neutral-800 relative"
         onClick={() => viewPost(post._id, createdUser._id)}
       >
         <div className="grid grid-cols-[60px_calc(100%-70px)] gap-[10px]">
@@ -146,13 +172,13 @@ export const HomePostCard = ({ post }: any) => {
               </div>
               <div
                 className={`flex items-center gap-2 ${
-                  post.reposts.includes(createdUser && createdUser._id)
+                  post.reposts.includes(userData && userData._id)
                     ? "text-green"
                     : ""
                 } hover:text-green cursor-pointer`}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleRePost(post._id, createdUser._id);
+                  handleRePost(post._id, userData._id);
                 }}
               >
                 <TbRepeat size={20} />
@@ -160,17 +186,17 @@ export const HomePostCard = ({ post }: any) => {
               </div>
               <div
                 className={`flex items-center gap-2 ${
-                  post.likes.includes(createdUser && createdUser._id)
+                  post.likes.includes(userData && userData._id)
                     ? "text-red"
                     : ""
                 } hover:text-red cursor-pointer`}
                 onClick={(e) => {
                   e.stopPropagation();
 
-                  handleLikePost(post._id, createdUser._id);
+                  handleLikePost(post._id, userData._id);
                 }}
               >
-                {post.likes.includes(createdUser._id) ? (
+                {post.likes.includes(userData._id) ? (
                   <FaHeart size={20} />
                 ) : (
                   <FaRegHeart size={20} />
@@ -183,10 +209,10 @@ export const HomePostCard = ({ post }: any) => {
                   className="text-xl cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleSaveToBookmark(post._id, createdUser._id);
+                    handleSaveToBookmark(post._id, userData._id);
                   }}
                 >
-                  {post.bookmarks.includes(createdUser._id) ? (
+                  {post.bookmarks.includes(userData._id) ? (
                     <IoBookmark size={20} className="text-red cursor-pointer" />
                   ) : (
                     <IoBookmarkOutline
@@ -216,6 +242,41 @@ export const HomePostCard = ({ post }: any) => {
             </div>
           </div>
         </div>
+
+        {userData._id && userData._id === createdUser._id ? (
+          <div
+            className="absolute top-3 right-2 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setEditPost(!editPost);
+            }}
+          >
+            <BiDotsHorizontalRounded className="text-2xl text-neutral-500" />
+          </div>
+        ) : (
+          ""
+        )}
+
+        {editPost ? (
+          <div className="absolute top-8 right-0 flex flex-col gap-2 w-48 bg-black text-white p-2 rounded-md border-1 border-white">
+            <div className="flex items-center gap-1 cursor-pointer">
+              <IoPencil />
+              <p>Edit Tweet</p>
+            </div>
+            <div
+              className="flex items-center gap-1 text-[#f87171] cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeletePost(post._id);
+              }}
+            >
+              <IoTrashOutline />
+              <p>Delete Tweet</p>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       {showCreateComment ? (
         <CreateComment postId={post._id} userId={createdUser._id} />
@@ -227,8 +288,14 @@ export const HomePostCard = ({ post }: any) => {
 };
 
 export const PostCard = ({ postId, userId }: any) => {
-  const { posts, users, reFetchPosts, setShowCreateComment, setReFetchPosts } =
-    useAppContext();
+  const {
+    posts,
+    users,
+    userData,
+    reFetchPosts,
+    setShowCreateComment,
+    setReFetchPosts,
+  } = useAppContext();
   let postSelected = posts.find((post: PostProps) => post._id === postId);
   let createdUser = users.find((user: UserProps) => user._id === userId);
   const { data: session } = useSession();
@@ -336,13 +403,13 @@ export const PostCard = ({ postId, userId }: any) => {
         </div>
         <div
           className={`flex items-center gap-2 ${
-            postSelected.reposts.includes(createdUser && createdUser._id)
+            postSelected.reposts.includes(userData && userData._id)
               ? "text-green"
               : ""
           } hover:text-green cursor-pointer`}
           onClick={(e) => {
             e.stopPropagation();
-            handleRePost(postSelected._id, createdUser._id);
+            handleRePost(postSelected._id, userData._id);
           }}
         >
           <TbRepeat size={20} />
@@ -350,17 +417,17 @@ export const PostCard = ({ postId, userId }: any) => {
         </div>
         <div
           className={`flex items-center gap-2 ${
-            postSelected.likes.includes(createdUser && createdUser._id)
+            postSelected.likes.includes(userData && userData._id)
               ? "text-red"
               : ""
           } hover:text-red cursor-pointer`}
           onClick={(e) => {
             e.stopPropagation();
 
-            handleLikePost(postSelected._id, createdUser._id);
+            handleLikePost(postSelected._id, userData._id);
           }}
         >
-          {postSelected.likes.includes(createdUser._id) ? (
+          {postSelected.likes.includes(userData._id) ? (
             <FaHeart size={20} />
           ) : (
             <FaRegHeart size={20} />
@@ -373,10 +440,10 @@ export const PostCard = ({ postId, userId }: any) => {
           className="text-xl cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            handleSaveToBookmark(postSelected._id, createdUser._id);
+            handleSaveToBookmark(postSelected._id, userData._id);
           }}
         >
-          {postSelected.bookmarks.includes(createdUser._id) ? (
+          {postSelected.bookmarks.includes(userData._id) ? (
             <IoBookmark size={20} className="text-red cursor-pointer" />
           ) : (
             <IoBookmarkOutline

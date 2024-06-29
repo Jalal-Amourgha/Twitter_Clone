@@ -99,7 +99,7 @@ export const MobileSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="md:hidden w-full bg-black fixed bottom-0 left-0 z-50 py-4 flex items-center justify-between ">
+    <div className="md:hidden w-full bg-black fixed bottom-0 left-0 z-50 p-4 flex items-center justify-between ">
       {sidebarLinks.map((item) => (
         <Link
           href={item.href}

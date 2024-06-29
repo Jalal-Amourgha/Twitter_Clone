@@ -61,7 +61,7 @@ const LoginForm = ({ closeBtn, handleRegister }: LoginFormProps) => {
         </form>
 
         <div className="text-neutral-400 text-lg text-center">
-          Don't have an account yet?{" "}
+          Don&apos;t have an account yet?{" "}
           <span
             className="font-semibold text-white cursor-pointer"
             onClick={handleRegister}
