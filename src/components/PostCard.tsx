@@ -18,59 +18,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CreateComment, PostComment } from "./CreateComment";
-
-var reFetch = 0;
-
-const handleLikePost = async (postId: string, userId: string) => {
-  try {
-    const response = await fetch(`/api/post`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        type: "like",
-        postId: postId,
-        userId: userId,
-      }),
-    });
-  } catch (error) {
-    console.log(error);
-  } finally {
-    reFetch++;
-  }
-};
-
-const handleRePost = async (postId: string, userId: string) => {
-  try {
-    const response = await fetch(`/api/post`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        type: "repost",
-        postId: postId,
-        userId: userId,
-      }),
-    });
-  } catch (error) {
-    console.log(error);
-  } finally {
-    reFetch++;
-  }
-};
-
-const handleSaveToBookmark = async (postId: string, userId: string) => {
-  try {
-    const response = await fetch(`/api/user`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        type: "bookmark",
-        postId: postId,
-        userId: userId,
-      }),
-    });
-  } catch (error) {
-    console.log(error);
-  } finally {
-    reFetch++;
-  }
-};
+import { useSession } from "next-auth/react";
 
 const handleCreatedAt = (date: string) => {
   return formatDistanceToNowStrict(new Date(date));
@@ -88,15 +36,80 @@ export const HomePostCard = ({ post }: any) => {
   let createdUser = users.find((user: UserProps) => user._id === post.creator);
   const [showCopy, setShowCopy] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const viewPost = (postId: string, userId: string) => {
     return router.push(`/post/${postId}`);
   };
 
-  useEffect(() => {
-    setReFetchPosts(reFetchPosts + 1);
-  }, [reFetch]);
+  const handleLikePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
 
+    try {
+      const response = await fetch(`/api/post`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          type: "like",
+          postId: postId,
+          userId: userId,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReFetchPosts(reFetchPosts + 1);
+    }
+  };
+
+  const handleRePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
+    try {
+      const response = await fetch(`/api/post`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          type: "repost",
+          postId: postId,
+          userId: userId,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReFetchPosts(reFetchPosts + 1);
+    }
+  };
+
+  const handleSaveToBookmark = async (postId: string, userId: string) => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
+    try {
+      const response = await fetch(`/api/post`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          type: "bookmark",
+          postId: postId,
+          userId: userId,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReFetchPosts(reFetchPosts + 1);
+    }
+  };
+
+  const handleCreateComment = () => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
+
+    setShowCreateComment(true);
+  };
   return (
     <>
       <div
@@ -123,7 +136,7 @@ export const HomePostCard = ({ post }: any) => {
                 className="flex items-center gap-2 hover:text-blue cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowCreateComment(true);
+                  handleCreateComment();
                 }}
               >
                 <FaRegCommentDots size={20} />
@@ -171,7 +184,7 @@ export const HomePostCard = ({ post }: any) => {
                     handleSaveToBookmark(post._id, createdUser._id);
                   }}
                 >
-                  {createdUser && createdUser.bookmarks.includes(post._id) ? (
+                  {post.bookmarks.includes(createdUser._id) ? (
                     <IoBookmark size={20} className="text-red cursor-pointer" />
                   ) : (
                     <IoBookmarkOutline
@@ -216,14 +229,79 @@ export const PostCard = ({ postId, userId }: any) => {
     useAppContext();
   let postSelected = posts.find((post: PostProps) => post._id === postId);
   let createdUser = users.find((user: UserProps) => user._id === userId);
-
+  const { data: session } = useSession();
   const handlePublishedAt = (date: string) => {
     return format(new Date(date), "h:mm a '·' MMM d, yyyy");
   };
 
-  useEffect(() => {
-    setReFetchPosts(reFetchPosts + 1);
-  }, [reFetch]);
+  const handleLikePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
+    try {
+      const response = await fetch(`/api/post`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          type: "like",
+          postId: postId,
+          userId: userId,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReFetchPosts(reFetchPosts + 1);
+    }
+  };
+
+  const handleRePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
+    try {
+      const response = await fetch(`/api/post`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          type: "repost",
+          postId: postId,
+          userId: userId,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReFetchPosts(reFetchPosts + 1);
+    }
+  };
+
+  const handleSaveToBookmark = async (postId: string, userId: string) => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
+    try {
+      const response = await fetch(`/api/post`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          type: "bookmark",
+          postId: postId,
+          userId: userId,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReFetchPosts(reFetchPosts + 1);
+    }
+  };
+
+  const handleCreateComment = () => {
+    if (!session?.user?.email) {
+      return alert("sir f7alk");
+    }
+
+    setShowCreateComment(true);
+  };
+
   return (
     <div className="p-4">
       <div className="grid grid-cols-[60px_calc(100%-70px)] gap-[10px]">
@@ -246,7 +324,7 @@ export const PostCard = ({ postId, userId }: any) => {
           className="flex items-center gap-2 hover:text-blue cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            setShowCreateComment(true);
+            handleCreateComment();
           }}
         >
           <FaRegCommentDots size={20} />
@@ -289,12 +367,12 @@ export const PostCard = ({ postId, userId }: any) => {
 
         <div
           className="text-xl cursor-pointer"
-          // onClick={(e) => {
-          //   e.stopPropagation();
-          //   handleSaveToBookmark(post._id, createdUser._id);
-          // }}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleSaveToBookmark(postSelected._id, createdUser._id);
+          }}
         >
-          {createdUser && createdUser.bookmarks.includes(postSelected._id) ? (
+          {postSelected.bookmarks.includes(createdUser._id) ? (
             <IoBookmark size={20} className="text-red cursor-pointer" />
           ) : (
             <IoBookmarkOutline

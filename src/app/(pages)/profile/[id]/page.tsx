@@ -2,6 +2,7 @@
 
 import { Header } from "@/components/Header";
 import UserInfo from "@/components/UserInfo";
+import UserPosts from "@/components/UserPosts";
 import { useAppContext } from "@/context";
 import { UserProps } from "@/types";
 import { useSession } from "next-auth/react";
@@ -86,8 +87,11 @@ const UserProfile = ({ params }: PageProps) => {
         )}
       </div>
 
-      {/* User - Details */}
+      {/* User - Info Details */}
       <UserInfo userData={selectedUser} />
+
+      {/* User - Posts - Replies - Likes */}
+      <UserPosts userId={selectedUser._id} />
     </>
   );
 };

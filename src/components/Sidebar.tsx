@@ -2,32 +2,43 @@
 
 import Link from "next/link";
 import { FaXTwitter } from "react-icons/fa6";
-import { GoHome } from "react-icons/go";
-import { RiNotification4Line } from "react-icons/ri";
-import { CiUser, CiBookmark } from "react-icons/ci";
+import {
+  GoHome,
+  GoHomeFill,
+  GoBookmark,
+  GoBookmarkFill,
+  GoSearch,
+} from "react-icons/go";
+import { RiUser3Line, RiUserFill } from "react-icons/ri";
+
 import { IoLogInOutline } from "react-icons/io5";
 import { signOut, useSession } from "next-auth/react";
 import { useAppContext } from "@/context";
+import { usePathname } from "next/navigation";
 
 const sidebarLinks = [
   {
     href: "/",
-    icon: GoHome,
+    icon1: <GoHome />,
+    icon2: <GoHomeFill />,
     label: "Home",
   },
   {
-    href: "/",
-    icon: RiNotification4Line,
-    label: "Notification",
+    href: "/search",
+    icon1: <GoSearch />,
+    icon2: <GoSearch />,
+    label: "Search",
   },
   {
     href: "/profile",
-    icon: CiUser,
+    icon1: <RiUser3Line />,
+    icon2: <RiUserFill />,
     label: "Profile",
   },
   {
-    href: "/",
-    icon: CiBookmark,
+    href: "/bookmarks",
+    icon1: <GoBookmark />,
+    icon2: <GoBookmarkFill />,
     label: "Bookmarks",
   },
 ];
@@ -35,6 +46,7 @@ const sidebarLinks = [
 const Sidebar = () => {
   const { setCreateTweet } = useAppContext();
   const { data: session } = useSession();
+  const pathname = usePathname();
 
   return (
     <div className="me-3">
@@ -51,29 +63,29 @@ const Sidebar = () => {
             className="text-white flex items-center text-3xl mb-4 rounded-full px-4 py-2 w-fit hover:bg-[#e7e9ea1a]"
             key={link.label}
           >
-            <link.icon size={28} color="white" />
-            <p className="hidden lg:block text-xl ml-4 font-semibold">
+            <div className="text-2xl">
+              {pathname === link.href ? link.icon2 : link.icon1}
+            </div>
+            <p className="hidden lg:block text-xl ml-4 font-normal">
               {link.label}
             </p>
           </Link>
         ))}
         {session?.user?.email ? (
           <button
-            className="flex items-center text-white text-3xl rounded-full px-4 
-        py-2 hover:bg-[#e7e9ea1a]"
+            className="flex items-center text-white text-3xl rounded-full px-2 
+        py-2 hover:bg-[#e7e9ea1a] "
             onClick={() => signOut()}
           >
             <IoLogInOutline />
-            <p className="hidden lg:block text-xl font-semibold ml-4">
-              Log out
-            </p>
+            <p className="hidden lg:block text-xl font-normal ml-4">Log out</p>
           </button>
         ) : (
           ""
         )}
 
         <button
-          className="blue-btn w-full mt-10"
+          className="hidden lg:block blue-btn w-full mt-10"
           onClick={() => setCreateTweet(true)}
         >
           Create Tweet

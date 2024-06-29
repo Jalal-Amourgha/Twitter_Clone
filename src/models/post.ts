@@ -18,6 +18,9 @@ const PostSchema = new Schema(
     reposts: {
       type: Array,
     },
+    bookmarks: {
+      type: Array,
+    },
   },
   { timestamps: true }
 );

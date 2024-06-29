@@ -6,6 +6,7 @@ import Image from "next/image";
 import { IoCloseOutline } from "react-icons/io5";
 import { CommentPostCard } from "./PostCard";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface CreateCommentProps {
   postId: string;
@@ -16,6 +17,7 @@ export const CreateComment = ({ postId, userId }: CreateCommentProps) => {
   const { posts, users, userData, setShowCreateComment } = useAppContext();
   const createdUser = users.filter((user: UserProps) => user._id === userId)[0];
   const [comment, setComment] = useState("");
+  const { data: session } = useSession();
 
   const handleCreatetComment = async (
     userId: string,
@@ -43,6 +45,10 @@ export const CreateComment = ({ postId, userId }: CreateCommentProps) => {
       setComment("");
     }
   };
+
+  if (!session?.user?.email) {
+    return <></>;
+  }
 
   return (
     <div
@@ -91,7 +97,7 @@ export const PostComment = ({ postId, userId }: CreateCommentProps) => {
   const { users } = useAppContext();
   const createdUser = users.find((user: UserProps) => user._id === userId);
   const [comment, setComment] = useState("");
-
+  const { data: session } = useSession();
   const handleCreatetComment = async (
     userId: string,
     postId: string,
@@ -100,8 +106,6 @@ export const PostComment = ({ postId, userId }: CreateCommentProps) => {
     if (!comment) {
       return console.log("3amar dak l post");
     }
-
-    console.log(userId, postId, comment);
 
     try {
       const response = await fetch("/api/comment/new", {
@@ -118,6 +122,10 @@ export const PostComment = ({ postId, userId }: CreateCommentProps) => {
       setComment("");
     }
   };
+
+  if (!session?.user?.email) {
+    return <></>;
+  }
 
   return (
     <>

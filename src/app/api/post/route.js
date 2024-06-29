@@ -39,6 +39,14 @@ export const PATCH = async (request, { params }) => {
       } else {
         PostSelected.reposts = [...PostSelected.reposts, userId];
       }
+    } else if (type === "bookmark") {
+      if (PostSelected.bookmarks.includes(userId)) {
+        PostSelected.bookmarks = PostSelected.bookmarks.filter(
+          (id) => id !== userId
+        );
+      } else {
+        PostSelected.bookmarks = [...PostSelected.bookmarks, userId];
+      }
     }
 
     await PostSelected.save();

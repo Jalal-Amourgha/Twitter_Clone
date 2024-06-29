@@ -35,9 +35,6 @@ const UserSchema = new Schema(
     following: {
       type: Array,
     },
-    bookmarks: {
-      type: Array,
-    },
   },
   { timestamps: true }
 );

@@ -7,6 +7,7 @@ import UserInfo from "@/components/UserInfo";
 import EditProfile from "@/components/EditProfile";
 import { useState } from "react";
 import { Header } from "@/components/Header";
+import UserPosts from "@/components/UserPosts";
 
 const MyProfile = () => {
   const { userData } = useAppContext();
@@ -52,8 +53,11 @@ const MyProfile = () => {
         </button>
       </div>
 
-      {/* User - Details */}
+      {/* User - Info - Details */}
       <UserInfo userData={userData} />
+
+      {/* User - Posts - Replies - Likes */}
+      <UserPosts userId={userData._id} />
 
       {/* Edit - Profile */}
       {openEditProfile ? (

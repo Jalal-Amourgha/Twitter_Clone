@@ -15,6 +15,7 @@ export const POST = async (request) => {
       likes: [],
       comments: [],
       reposts: [],
+      bookmarks: [],
     });
 
     await newPost.save();

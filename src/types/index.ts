@@ -21,6 +21,7 @@ export interface PostProps {
   post: string;
   likes: string[];
   comments: string[];
+  bookmarks: string[];
   createdAt: string;
 }
 
