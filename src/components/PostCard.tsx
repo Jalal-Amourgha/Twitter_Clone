@@ -127,7 +127,9 @@ export const HomePostCard = ({ post }: any) => {
               <h1 className="text-xl text-white font-semibold">
                 {createdUser && createdUser.name}
               </h1>
-              <span>@{createdUser && createdUser.username}</span>
+              <span className="hidden sm:block">
+                @{createdUser && createdUser.username}
+              </span>
               <span>{handleCreatedAt(post.createdAt)}</span>
             </div>
             <p className="text-white text-lg mt-2">{post.post}</p>
@@ -312,7 +314,9 @@ export const PostCard = ({ postId, userId }: any) => {
         </div>
         <div className="flex flex-col">
           <h1 className="text-white font-semibold">{createdUser.name}</h1>
-          <p className="text-neutral-500">@{createdUser.username}</p>
+          <p className="text-neutral-500 hidden sm:block">
+            @{createdUser.username}
+          </p>
         </div>
       </div>
       <p className="text-white text-lg my-5">{postSelected.post}</p>

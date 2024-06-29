@@ -43,7 +43,7 @@ const sidebarLinks = [
   },
 ];
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const { setCreateTweet } = useAppContext();
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -94,4 +94,21 @@ const Sidebar = () => {
     </div>
   );
 };
-export default Sidebar;
+
+export const MobileSidebar = () => {
+  const pathname = usePathname();
+
+  return (
+    <div className="md:hidden w-full bg-black fixed bottom-0 left-0 z-50 py-4 flex items-center justify-between ">
+      {sidebarLinks.map((item) => (
+        <Link
+          href={item.href}
+          className="text-white text-xl cursor-pointer"
+          key={item.label}
+        >
+          {item.href === pathname ? item.icon2 : item.icon1}
+        </Link>
+      ))}
+    </div>
+  );
+};
