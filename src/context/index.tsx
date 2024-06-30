@@ -10,7 +10,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [userData, setUserData] = useState({ _id: "" });
-  const [reFetchUsers, setReFetchUsers] = useState(1);
+  const [reFetchUsers, setReFetchUsers] = useState(0);
   const [reFetchPosts, setReFetchPosts] = useState(0);
 
   const [reFetchComment, setReFetchComment] = useState(0);

@@ -44,7 +44,6 @@ const sidebarLinks = [
 ];
 
 export const Sidebar = () => {
-  const { setCreateTweet } = useAppContext();
   const { data: session } = useSession();
   const pathname = usePathname();
 
