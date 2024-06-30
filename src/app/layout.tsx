@@ -4,7 +4,7 @@ import "./globals.css";
 import Layout from "@/components/Layout";
 import { AuthProvider } from "./Providers";
 import { AppWrapper } from "@/context";
-import { EdgeStoreProvider } from "@/utils/edgestore";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 const inter = Inter({ subsets: ["latin"] });
 

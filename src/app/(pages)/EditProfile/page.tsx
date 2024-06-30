@@ -3,10 +3,11 @@
 import { useAppContext } from "@/context";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { useEdgeStore } from "@/utils/edgestore";
 import { FileX2, ImageUp } from "lucide-react";
 import { Header } from "@/components/Header";
 import { SingleImageDropzone } from "@/components/SingleImageDropzone";
+import { useEdgeStore } from "@/lib/edgestore";
+import { useRouter } from "next/navigation";
 
 interface EditProfileProps {
   closeBtn: () => void;
@@ -25,6 +26,7 @@ const EditProfile = () => {
   const [name, setName] = useState(userData && userData.name);
   const [username, setUserame] = useState(userData && userData.username);
   const [bio, setBio] = useState(userData && userData.bio);
+  const router = useRouter();
 
   const updateUserInfo = async () => {
     try {
@@ -45,6 +47,7 @@ const EditProfile = () => {
       console.error(error);
     } finally {
       setReFetchUsers(reFetchUsers + 1);
+      router.back();
     }
   };
 
