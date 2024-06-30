@@ -196,7 +196,7 @@ export const HomePostCard = ({ post }: any) => {
                   handleLikePost(post._id, userData._id);
                 }}
               >
-                {post.likes.includes(userData._id) ? (
+                {post.likes.includes(userData && userData._id) ? (
                   <FaHeart size={20} />
                 ) : (
                   <FaRegHeart size={20} />
@@ -212,7 +212,7 @@ export const HomePostCard = ({ post }: any) => {
                     handleSaveToBookmark(post._id, userData._id);
                   }}
                 >
-                  {post.bookmarks.includes(userData._id) ? (
+                  {post.bookmarks.includes(userData && userData._id) ? (
                     <IoBookmark size={20} className="text-red cursor-pointer" />
                   ) : (
                     <IoBookmarkOutline
@@ -427,7 +427,7 @@ export const PostCard = ({ postId, userId }: any) => {
             handleLikePost(postSelected._id, userData._id);
           }}
         >
-          {postSelected.likes.includes(userData._id) ? (
+          {postSelected.likes.includes(userData && userData._id) ? (
             <FaHeart size={20} />
           ) : (
             <FaRegHeart size={20} />
@@ -443,7 +443,7 @@ export const PostCard = ({ postId, userId }: any) => {
             handleSaveToBookmark(postSelected._id, userData._id);
           }}
         >
-          {postSelected.bookmarks.includes(userData._id) ? (
+          {postSelected.bookmarks.includes(userData && userData._id) ? (
             <IoBookmark size={20} className="text-red cursor-pointer" />
           ) : (
             <IoBookmarkOutline

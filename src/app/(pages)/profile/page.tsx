@@ -1,17 +1,37 @@
 "use client";
-import { FaArrowLeft } from "react-icons/fa6";
 
+import { FaArrowLeft } from "react-icons/fa6";
 import { useAppContext } from "@/context";
 import Image from "next/image";
 import UserInfo from "@/components/UserInfo";
-import EditProfile from "@/components/EditProfile";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
-import UserPosts from "@/components/UserPosts";
+import { useSession } from "next-auth/react";
+import EditProfile from "@/components/EditProfile";
+
+const UserPosts = dynamic(() => import("@/components/UserPosts"), {
+  ssr: false,
+});
 
 const MyProfile = () => {
-  const { userData } = useAppContext();
+  const { reFetchUsers } = useAppContext();
+  const [userData, setUserData] = useState<any>("");
   const [openEditProfile, setOpenEditProfile] = useState(false);
+  const { data: session } = useSession();
+
+  const fetchUserData = async (userId: String) => {
+    const data = await fetch(`/api/user/${userId}/infos`);
+    const res = await data.json();
+
+    return setUserData(res);
+  };
+
+  useEffect(() => {
+    if (session?.user?.email && reFetchUsers) {
+      fetchUserData(session?.user?.email as string);
+    }
+  }, [session?.user?.email, reFetchUsers]);
 
   if (!userData) {
     return <h1 className="text-2xl font-bold text-white">Loading ...</h1>;
@@ -19,11 +39,11 @@ const MyProfile = () => {
 
   return (
     <>
-      <Header title={userData.username} />
+      <Header title={userData && userData.username} />
 
-      {/* User -  Bannner */}
+      {/* User - Banner */}
       <div className="w-full h-[250px] relative">
-        {userData.banner ? (
+        {userData && userData.banner ? (
           <Image
             src={userData.banner}
             fill
@@ -40,7 +60,7 @@ const MyProfile = () => {
       <div className="flex justify-between mx-6">
         <div className="mt-[-60px] border-[5px] border-black rounded-full relative z-10">
           <Image
-            src={userData.img}
+            src={userData && userData.img}
             height={120}
             width={120}
             sizes="100%"
@@ -54,12 +74,13 @@ const MyProfile = () => {
       </div>
 
       {/* User - Info - Details */}
-      <UserInfo userData={userData} />
+      {userData && <UserInfo userData={userData} />}
 
       {/* User - Posts - Replies - Likes */}
-      <UserPosts userId={userData._id} />
+      {userData && <UserPosts userId={userData._id} />}
 
       {/* Edit - Profile */}
+
       {openEditProfile ? (
         <EditProfile
           closeBtn={() => setOpenEditProfile(false)}
