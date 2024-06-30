@@ -68,12 +68,7 @@ const MyProfile = () => {
             alt="user image"
           />
         </div>
-        <button
-          className="white-btn"
-          onClick={() => router.push(`/EditProfile`)}
-        >
-          Edit
-        </button>
+        <button className="white-btn">Edit</button>
       </div>
 
       {/* User - Info - Details */}
@@ -81,8 +76,6 @@ const MyProfile = () => {
 
       {/* User - Posts - Replies - Likes */}
       {userData && <UserPosts userId={userData._id} />}
-
-      {/* Edit - Profile */}
     </>
   );
 };
