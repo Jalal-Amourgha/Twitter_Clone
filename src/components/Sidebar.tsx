@@ -83,13 +83,6 @@ export const Sidebar = () => {
         ) : (
           ""
         )}
-
-        <button
-          className="hidden lg:block blue-btn w-full mt-10"
-          onClick={() => setCreateTweet(true)}
-        >
-          Create Tweet
-        </button>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { useAppContext } from "@/context";
 import { UserProps } from "@/types";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { DiVisualstudio } from "react-icons/di";
 
 interface PageProps {
@@ -17,12 +18,28 @@ interface PageProps {
 
 const UserProfile = ({ params }: PageProps) => {
   const { users, userData, reFetchUsers, setReFetchUsers } = useAppContext();
-  const selectedUser = users.filter(
-    (user: UserProps) => user.username === params.id
-  )[0];
-
+  const [selectedUser, setSelectedUser] = useState<any>({});
+  const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
-  const isUserFollowed = selectedUser.followers.includes(userData?._id);
+  const [isUserFollowed, setIsUserFollowed] = useState(false);
+
+  useEffect(() => {
+    if (params.id && users) {
+      setSelectedUser(
+        users.find((user: UserProps) => user.username === params.id)
+      );
+    }
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, [params.id, users]);
+
+  useEffect(() => {
+    if (!loading && userData) {
+      setIsUserFollowed(selectedUser.followers.includes(userData._id));
+    }
+  }, [selectedUser, userData, loading]);
 
   const handleFollow = async () => {
     try {
@@ -40,8 +57,8 @@ const UserProfile = ({ params }: PageProps) => {
     }
   };
 
-  if (!selectedUser) {
-    <h1 className="text-white text-2xl font-bold">Loading ....</h1>;
+  if (loading && selectedUser !== undefined) {
+    return <h1 className="text-white text-2xl font-bold">Loading ....</h1>;
   }
 
   return (
@@ -83,7 +100,7 @@ const UserProfile = ({ params }: PageProps) => {
             {isUserFollowed ? "unfollow" : "Follow"}
           </button>
         ) : (
-          <DiVisualstudio></DiVisualstudio>
+          <></>
         )}
       </div>
 

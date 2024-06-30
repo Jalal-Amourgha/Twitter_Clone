@@ -1,7 +1,5 @@
 "use client";
 
-import { useAppContext } from "@/context";
-import { PostProps, UserProps } from "@/types";
 import Image from "next/image";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import {
@@ -17,38 +15,26 @@ import { LuLink } from "react-icons/lu";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CreateComment, PostComment } from "./CreateComment";
-import { useSession } from "next-auth/react";
+import { PostComment } from "./CreateComment";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { PostProps } from "@/types";
+import { useAppContext } from "@/context";
 
-const handleCreatedAt = (date: string) => {
-  return formatDistanceToNowStrict(new Date(date));
-};
-
-export const HomePostCard = ({ post }: any) => {
-  const {
-    userData,
-    users,
-    reFetchPosts,
-    setReFetchPosts,
-    showCreateComment,
-    setShowCreateComment,
-  } = useAppContext();
-  let createdUser = users.find((user: UserProps) => user._id === post.creator);
+export const HomePostCard = ({ post, creator, loggedUser }: any) => {
+  const { reFetchPosts, setReFetchPosts } = useAppContext();
   const [showCopy, setShowCopy] = useState(false);
   const router = useRouter();
-  const { data: session } = useSession();
   const [editPost, setEditPost] = useState(false);
 
   const viewPost = (postId: string, userId: string) => {
     return router.push(`/post/${postId}`);
   };
 
-  const handleLikePost = async (postId: string, userId: string) => {
-    if (!session?.user?.email) {
-      return;
-    }
+  const handleCreatedAt = (date: string) => {
+    return formatDistanceToNowStrict(new Date(date));
+  };
 
+  const handleLikePost = async (postId: string, userId: string) => {
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -66,9 +52,6 @@ export const HomePostCard = ({ post }: any) => {
   };
 
   const handleRePost = async (postId: string, userId: string) => {
-    if (!session?.user?.email) {
-      return;
-    }
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -86,9 +69,6 @@ export const HomePostCard = ({ post }: any) => {
   };
 
   const handleSaveToBookmark = async (postId: string, userId: string) => {
-    if (!session?.user?.email) {
-      return;
-    }
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -106,11 +86,6 @@ export const HomePostCard = ({ post }: any) => {
   };
 
   const handleDeletePost = async (postId: string) => {
-    if (!session?.user?.email) {
-      console.log("No session found or user not logged in");
-      return;
-    }
-
     try {
       const response = await fetch(`/api/post/${postId.toString()}`, {
         method: "DELETE",
@@ -123,62 +98,44 @@ export const HomePostCard = ({ post }: any) => {
     } catch (error) {
       console.error("Error deleting post:", error);
     } finally {
-      setEditPost(false);
       setReFetchPosts(reFetchPosts + 1);
     }
-  };
-
-  const handleCreateComment = () => {
-    if (!session?.user?.email) {
-      return;
-    }
-
-    setShowCreateComment(true);
   };
 
   return (
     <>
       <div
         className="p-3 border-b-1 border-neutral-800 relative"
-        onClick={() => viewPost(post._id, createdUser._id)}
+        onClick={() => viewPost(post._id, creator._id)}
       >
         <div className="grid grid-cols-[60px_calc(100%-70px)] gap-[10px]">
           <div className="h-12 w-12 relative rounded-full overflow-hidden">
-            {createdUser && (
-              <Image src={createdUser.img} fill sizes="100" alt="user avatar" />
-            )}
+            <Image src={creator.img} fill sizes="100" alt="user avatar" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2 text-neutral-500 text-lg ">
               <h1 className="text-xl text-white font-semibold">
-                {createdUser && createdUser.name}
+                {creator.name}
               </h1>
-              <span className="hidden sm:block">
-                @{createdUser && createdUser.username}
-              </span>
+              <span className="hidden sm:block">@{creator.username}</span>
               <span>{handleCreatedAt(post.createdAt)}</span>
             </div>
             <p className="text-white text-lg mt-2">{post.post}</p>
             <div className="w-full flex justify-between items-center gap-4 text-neutral-500 mt-5">
               <div
                 className="flex items-center gap-2 hover:text-blue cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleCreateComment();
-                }}
+                onClick={() => viewPost(post._id, creator._id)}
               >
                 <FaRegCommentDots size={20} />
                 <span>{post.comments.length}</span>
               </div>
               <div
                 className={`flex items-center gap-2 ${
-                  post.reposts.includes(userData && userData._id)
-                    ? "text-green"
-                    : ""
+                  post.reposts.includes(loggedUser._id) ? "text-green" : ""
                 } hover:text-green cursor-pointer`}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleRePost(post._id, userData._id);
+                  handleRePost(post._id, loggedUser._id);
                 }}
               >
                 <TbRepeat size={20} />
@@ -186,17 +143,15 @@ export const HomePostCard = ({ post }: any) => {
               </div>
               <div
                 className={`flex items-center gap-2 ${
-                  post.likes.includes(userData && userData._id)
-                    ? "text-red"
-                    : ""
+                  post.likes.includes(loggedUser._id) ? "text-red" : ""
                 } hover:text-red cursor-pointer`}
                 onClick={(e) => {
                   e.stopPropagation();
 
-                  handleLikePost(post._id, userData._id);
+                  handleLikePost(post._id, loggedUser._id);
                 }}
               >
-                {post.likes.includes(userData && userData._id) ? (
+                {post.likes.includes(loggedUser._id) ? (
                   <FaHeart size={20} />
                 ) : (
                   <FaRegHeart size={20} />
@@ -209,10 +164,10 @@ export const HomePostCard = ({ post }: any) => {
                   className="text-xl cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleSaveToBookmark(post._id, userData._id);
+                    handleSaveToBookmark(post._id, loggedUser._id);
                   }}
                 >
-                  {post.bookmarks.includes(userData && userData._id) ? (
+                  {post.bookmarks.includes(loggedUser._id) ? (
                     <IoBookmark size={20} className="text-red cursor-pointer" />
                   ) : (
                     <IoBookmarkOutline
@@ -243,7 +198,7 @@ export const HomePostCard = ({ post }: any) => {
           </div>
         </div>
 
-        {userData._id && userData._id === createdUser._id ? (
+        {loggedUser._id === creator._id ? (
           <div
             className="absolute top-3 right-2 cursor-pointer"
             onClick={(e) => {
@@ -278,35 +233,16 @@ export const HomePostCard = ({ post }: any) => {
           ""
         )}
       </div>
-      {showCreateComment ? (
-        <CreateComment postId={post._id} userId={createdUser._id} />
-      ) : (
-        ""
-      )}
     </>
   );
 };
 
-export const PostCard = ({ postId, userId }: any) => {
-  const {
-    posts,
-    users,
-    userData,
-    reFetchPosts,
-    setShowCreateComment,
-    setReFetchPosts,
-  } = useAppContext();
-  let postSelected = posts.find((post: PostProps) => post._id === postId);
-  let createdUser = users.find((user: UserProps) => user._id === userId);
-  const { data: session } = useSession();
+export const PostCard = ({ post, creator, loggedUser }: any) => {
+  const { reFetchPosts, setReFetchPosts } = useAppContext();
   const handlePublishedAt = (date: string) => {
     return format(new Date(date), "h:mm a '·' MMM d, yyyy");
   };
-
   const handleLikePost = async (postId: string, userId: string) => {
-    if (!session?.user?.email) {
-      return;
-    }
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -324,9 +260,6 @@ export const PostCard = ({ postId, userId }: any) => {
   };
 
   const handleRePost = async (postId: string, userId: string) => {
-    if (!session?.user?.email) {
-      return;
-    }
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -344,9 +277,6 @@ export const PostCard = ({ postId, userId }: any) => {
   };
 
   const handleSaveToBookmark = async (postId: string, userId: string) => {
-    if (!session?.user?.email) {
-      return;
-    }
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -363,87 +293,89 @@ export const PostCard = ({ postId, userId }: any) => {
     }
   };
 
-  const handleCreateComment = () => {
-    if (!session?.user?.email) {
-      return;
+  const handleDeletePost = async (postId: string) => {
+    try {
+      const response = await fetch(`/api/post/${postId.toString()}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete post");
+      }
+      console.log("Post deleted successfully");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    } finally {
+      setReFetchPosts(reFetchPosts + 1);
     }
-
-    setShowCreateComment(true);
   };
-
   return (
     <div className="p-4">
       <div className="grid grid-cols-[60px_calc(100%-70px)] gap-[10px]">
         <div className="h-12 w-12 relative rounded-full overflow-hidden">
-          {createdUser && (
-            <Image src={createdUser.img} fill sizes="100" alt="user avatar" />
-          )}
+          <Image src={creator.img} fill sizes="100" alt="user avatar" />
         </div>
         <div className="flex flex-col">
-          <h1 className="text-white font-semibold">{createdUser.name}</h1>
+          <h1 className="text-white font-semibold">{creator.name}</h1>
           <p className="text-neutral-500 hidden sm:block">
-            @{createdUser.username}
+            @{creator.username}
           </p>
         </div>
       </div>
-      <p className="text-white text-lg my-5">{postSelected.post}</p>
+      <p className="text-white text-lg my-5">{post.post}</p>
       <div className="text-neutral-500">
-        {handlePublishedAt(postSelected.createdAt)}
+        {handlePublishedAt(post.createdAt)}
       </div>
       <div className="w-full flex justify-between items-center  text-neutral-500 my-4 py-3 border-y-1 border-neutral-800  ">
         <div
           className="flex items-center gap-2 hover:text-blue cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            handleCreateComment();
+            // handleCreateComment();
           }}
         >
           <FaRegCommentDots size={20} />
-          <span>{postSelected.comments.length}</span>
+          <span>{post.comments.length}</span>
         </div>
         <div
           className={`flex items-center gap-2 ${
-            postSelected.reposts.includes(userData && userData._id)
-              ? "text-green"
-              : ""
+            post.reposts.includes(loggedUser._id) ? "text-green" : ""
           } hover:text-green cursor-pointer`}
           onClick={(e) => {
             e.stopPropagation();
-            handleRePost(postSelected._id, userData._id);
+            handleRePost(post._id, loggedUser._id);
           }}
         >
           <TbRepeat size={20} />
-          <span>{postSelected.reposts.length}</span>
+          <span>{post.reposts.length}</span>
         </div>
         <div
           className={`flex items-center gap-2 ${
-            postSelected.likes.includes(userData && userData._id)
-              ? "text-red"
-              : ""
+            post.likes.includes(loggedUser._id) ? "text-red" : ""
           } hover:text-red cursor-pointer`}
           onClick={(e) => {
             e.stopPropagation();
 
-            handleLikePost(postSelected._id, userData._id);
+            handleLikePost(post._id, loggedUser._id);
           }}
         >
-          {postSelected.likes.includes(userData && userData._id) ? (
+          {post.likes.includes(loggedUser._id) ? (
             <FaHeart size={20} />
           ) : (
             <FaRegHeart size={20} />
           )}
 
-          <span>{postSelected.likes.length}</span>
+          <span>{post.likes.length}</span>
         </div>
 
         <div
           className="text-xl cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            handleSaveToBookmark(postSelected._id, userData._id);
+            handleSaveToBookmark(post._id, loggedUser._id);
           }}
         >
-          {postSelected.bookmarks.includes(userData && userData._id) ? (
+          {post.bookmarks.includes(loggedUser._id) ? (
             <IoBookmark size={20} className="text-red cursor-pointer" />
           ) : (
             <IoBookmarkOutline
@@ -468,36 +400,7 @@ export const PostCard = ({ postId, userId }: any) => {
         </div> */}
       </div>
 
-      <PostComment postId={postId} userId={userId} />
-    </div>
-  );
-};
-
-export const CommentPostCard = ({ postId, userId }: any) => {
-  const { posts, users } = useAppContext();
-  let postSelected = posts.find((post: PostProps) => post._id === postId);
-  let createdUser = users.find((user: UserProps) => user._id === userId);
-
-  return (
-    <div className="grid grid-cols-[60px_calc(100%-70px)] gap-[10px]">
-      <div className="h-12 w-12 relative rounded-full overflow-hidden">
-        {createdUser && (
-          <Image src={createdUser.img} fill sizes="100" alt="user avatar" />
-        )}
-      </div>
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2 text-neutral-500 text-lg ">
-          <h1 className="text-xl text-white font-semibold">
-            {createdUser && createdUser.name}
-          </h1>
-          <span>@{createdUser && createdUser.username}</span>
-          <span>{handleCreatedAt(postSelected.createdAt)}</span>
-        </div>
-        <p className="text-white text-lg mt-2 mb-5">{postSelected.post}</p>
-        <p className="text-neutral-500">
-          Replay to <span className="text-blue">@{createdUser.username}</span>
-        </p>
-      </div>
+      <PostComment postId={post._id} userId={loggedUser._id} />
     </div>
   );
 };

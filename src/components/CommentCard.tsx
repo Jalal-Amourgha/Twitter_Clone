@@ -6,26 +6,9 @@ import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
 
-const CommentCard = ({ comment }: any) => {
+const CommentCard = ({ comment, likeComment, loggedUser }: any) => {
   const { users, reFetchComment, setReFetchComment } = useAppContext();
   let creator = users.find((user: UserProps) => user._id === comment.creator);
-
-  const handleLikeComment = async (commentId: string, userId: string) => {
-    try {
-      const response = await fetch(`/api/comment/${commentId}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          type: "like",
-          commentId: commentId,
-          userId: userId,
-        }),
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setReFetchComment(reFetchComment + 1);
-    }
-  };
 
   const handleCreatedAt = (date: string) => {
     return formatDistanceToNowStrict(new Date(date));
@@ -50,9 +33,9 @@ const CommentCard = ({ comment }: any) => {
       </div>
       <div
         className="flex items-center gap-1 w-fit ml-[68px] mt-3 text-xl text-neutral-500 hover:text-red cursor-pointer"
-        onClick={() => handleLikeComment(comment._id, creator._id)}
+        onClick={() => likeComment(comment._id)}
       >
-        {comment.likes.includes(creator._id) ? (
+        {comment.likes.includes(loggedUser._id) ? (
           <IoHeart className="text-red" />
         ) : (
           <IoHeartOutline />

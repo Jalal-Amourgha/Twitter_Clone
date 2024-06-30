@@ -7,7 +7,7 @@ import { PostProps, UserProps } from "@/types";
 import { useEffect, useState } from "react";
 
 const BookmarksPage = () => {
-  const { posts, userData } = useAppContext();
+  const { posts, users, userData } = useAppContext();
   const [userBookmarks, setUserBookmarks] = useState([]);
 
   useEffect(() => {
@@ -22,10 +22,20 @@ const BookmarksPage = () => {
   return (
     <>
       <Header title="Bookmarks" />
+
       <div className="flex flex-col">
         {userBookmarks &&
+          users &&
+          userData &&
           userBookmarks.map((post: PostProps) => (
-            <HomePostCard post={post} key={post._id} />
+            <HomePostCard
+              post={post}
+              creator={users.find(
+                (user: UserProps) => user._id === userData._id
+              )}
+              loggedUser={userData}
+              key={post._id}
+            />
           ))}
       </div>
     </>

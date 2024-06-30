@@ -1,12 +1,12 @@
 "use client";
 
 import { useAppContext } from "@/context";
-import { PostProps } from "@/types";
+import { PostProps, UserProps } from "@/types";
 import { useState } from "react";
 import { HomePostCard } from "./PostCard";
 
-const UserPosts = ({ userId }: { userId: string }) => {
-  const { posts } = useAppContext();
+const UserPosts = ({ userId }: { userId: String }) => {
+  const { posts, userData, users } = useAppContext();
   const [filter, setFilter] = useState<string>("creator");
 
   const FilterProps = [
@@ -51,10 +51,18 @@ const UserPosts = ({ userId }: { userId: string }) => {
 
       <div className="flex flex-col mb-10">
         {posts &&
-          userId &&
+          users &&
+          userData &&
           posts.map((post: any) =>
             post[filter].includes(userId) ? (
-              <HomePostCard post={post} key={post._id} />
+              <HomePostCard
+                post={post}
+                creator={users.find(
+                  (user: UserProps) => user._id === post.creator
+                )}
+                loggedUser={userData}
+                key={post._id}
+              />
             ) : (
               ""
             )

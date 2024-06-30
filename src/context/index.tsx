@@ -11,9 +11,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [users, setUsers] = useState([]);
   const [userData, setUserData] = useState({ _id: "" });
   const [reFetchUsers, setReFetchUsers] = useState(1);
-  const [reFetchPosts, setReFetchPosts] = useState(1);
-  const [createTweet, setCreateTweet] = useState(false);
-  const [showCreateComment, setShowCreateComment] = useState(false);
+  const [reFetchPosts, setReFetchPosts] = useState(0);
+
   const [reFetchComment, setReFetchComment] = useState(0);
   const { data: session } = useSession();
 
@@ -25,19 +24,45 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     setUsers(data.users);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [reFetchPosts, reFetchUsers]);
+  const fetchPosts = async () => {
+    const res = await fetch("/api/post");
+    const data = await res.json();
+
+    setPosts(data);
+  };
+
+  const fetchUsers = async () => {
+    const res = await fetch("/api/user");
+    const data = await res.json();
+
+    setUsers(data);
+  };
 
   useEffect(() => {
-    if (session?.user?.email && reFetchUsers) {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (reFetchPosts) {
+      fetchPosts();
+    }
+  }, [reFetchPosts]);
+
+  useEffect(() => {
+    if (reFetchUsers) {
+      fetchUsers();
+    }
+  }, [reFetchUsers]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
       setUserData(
         users.filter(
           (user: UserProps) => user.email === session?.user?.email
         )[0]
       );
     }
-  }, [session?.user?.email, reFetchUsers, users]);
+  }, [session?.user?.email, users]);
 
   return (
     <AppContext.Provider
@@ -47,16 +72,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         userData,
         reFetchUsers,
         reFetchPosts,
-        createTweet,
-        showCreateComment,
+
         reFetchComment,
         setPosts,
         setUsers,
         setUserData,
         setReFetchUsers,
         setReFetchPosts,
-        setCreateTweet,
-        setShowCreateComment,
+
         setReFetchComment,
       }}
     >
