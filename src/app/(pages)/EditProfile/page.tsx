@@ -80,7 +80,7 @@ const EditProfile = () => {
             className="bg-black text-white p-1  border-[1px] border-dashed rounded-md"
             onClick={async () => {
               if (file1) {
-                const res = await edgestore.myPublicImages.upload({
+                const res = await edgestore.publicFiles.upload({
                   file: file1,
                   onProgressChange: (progress) => {
                     setBannerProgress(progress);
