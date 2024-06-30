@@ -17,23 +17,17 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [reFetchComment, setReFetchComment] = useState(0);
   const { data: session } = useSession();
 
-  const fetchPosts = async () => {
-    const data = await fetch(`/api/post`);
-    const res = await data.json();
-
-    return setPosts(res);
-  };
-
-  const fetchUsers = async () => {
-    const res = await fetch("/api/user");
+  const fetchData = async () => {
+    const res = await fetch("/api/data");
     const data = await res.json();
 
-    setUsers(data);
+    setPosts(data.posts);
+    setUsers(data.users);
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, [reFetchUsers]);
+    fetchData();
+  }, [reFetchPosts, reFetchUsers]);
 
   useEffect(() => {
     if (session?.user?.email && reFetchUsers) {
@@ -44,10 +38,6 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       );
     }
   }, [session?.user?.email, reFetchUsers, users]);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [reFetchPosts]);
 
   return (
     <AppContext.Provider
