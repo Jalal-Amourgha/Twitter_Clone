@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { useSession } from "next-auth/react";
-import EditProfile from "@/components/EditProfile";
+import { useRouter } from "next/navigation";
 
 const UserPosts = dynamic(() => import("@/components/UserPosts"), {
   ssr: false,
@@ -17,7 +17,7 @@ const UserPosts = dynamic(() => import("@/components/UserPosts"), {
 const MyProfile = () => {
   const { reFetchUsers } = useAppContext();
   const [userData, setUserData] = useState<any>("");
-  const [openEditProfile, setOpenEditProfile] = useState(false);
+  const router = useRouter();
   const { data: session } = useSession();
 
   const fetchUserData = async (userId: String) => {
@@ -68,7 +68,10 @@ const MyProfile = () => {
             alt="user image"
           />
         </div>
-        <button className="white-btn" onClick={() => setOpenEditProfile(true)}>
+        <button
+          className="white-btn"
+          onClick={() => router.push(`/EditProfile`)}
+        >
           Edit
         </button>
       </div>
@@ -80,15 +83,6 @@ const MyProfile = () => {
       {userData && <UserPosts userId={userData._id} />}
 
       {/* Edit - Profile */}
-
-      {openEditProfile ? (
-        <EditProfile
-          closeBtn={() => setOpenEditProfile(false)}
-          userData={userData}
-        />
-      ) : (
-        ""
-      )}
     </>
   );
 };
