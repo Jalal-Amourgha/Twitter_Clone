@@ -8,9 +8,20 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const FollowBar = () => {
-  const { users } = useAppContext();
+  const [users, setUsers] = useState([]);
   const { data: session } = useSession();
   const router = useRouter();
+
+  const fetchUsers = async () => {
+    const res = await fetch("/api/user");
+    const data = await res.json();
+
+    setUsers(data);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <>
@@ -20,7 +31,7 @@ const FollowBar = () => {
         </h1>
         {users &&
           users.map((user: UserProps, index: number) =>
-            user.email !== session?.user?.email && index < 7 ? (
+            user.email !== session?.user?.email ? (
               <div
                 className="flex items-center p-2 mb-2 rounded-md cursor-pointer hover:bg-neutral-600"
                 key={index}

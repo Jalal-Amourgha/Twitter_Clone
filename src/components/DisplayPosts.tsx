@@ -12,19 +12,18 @@ const DisplayPosts = () => {
   const [loggedUser, setLoggedUser] = useState({ _id: "58455" });
   const { data: session } = useSession();
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      setLoggedUser(
-        users.find((user: UserProps) => user.email === session?.user?.email)
-      );
-    }
-  }, [session?.user?.email]);
+  // useEffect(() => {
+  //   if (session?.user?.email) {
+  //     setLoggedUser(
+  //       users.find((user: UserProps) => user.email === session?.user?.email)
+  //     );
+  //   }
+  // }, [session?.user?.email]);
 
   return (
     <div className="flex flex-col">
       {posts &&
         users &&
-        loggedUser &&
         posts
           .slice()
           .reverse()
