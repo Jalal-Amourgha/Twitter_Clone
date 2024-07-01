@@ -14,7 +14,7 @@ const FollowBar = () => {
 
   const fetchUsers = async () => {
     const res = await fetch(
-      "https://twitter-clone-g7kd30ooz-jalals-projects-129a6bc1.vercel.app/api/user"
+      "https://twitter-clone-nine-eta.vercel.app/api/user"
     );
     const data = await res.json();
 
