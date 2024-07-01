@@ -19,12 +19,14 @@ import { PostComment } from "./CreateComment";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { PostProps } from "@/types";
 import { useAppContext } from "@/context";
+import { useSession } from "next-auth/react";
 
 export const HomePostCard = ({ post, creator, loggedUser }: any) => {
   const { reFetchPosts, setReFetchPosts } = useAppContext();
   const [showCopy, setShowCopy] = useState(false);
   const router = useRouter();
   const [editPost, setEditPost] = useState(false);
+  const { data: session } = useSession();
 
   const viewPost = (postId: string, userId: string) => {
     return router.push(`/post/${postId}`);
@@ -35,6 +37,7 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
   };
 
   const handleLikePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -52,6 +55,7 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
   };
 
   const handleRePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -69,6 +73,7 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
   };
 
   const handleSaveToBookmark = async (postId: string, userId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -86,6 +91,7 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
   };
 
   const handleDeletePost = async (postId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post/${postId.toString()}`, {
         method: "DELETE",
@@ -239,10 +245,12 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
 
 export const PostCard = ({ post, creator, loggedUser }: any) => {
   const { reFetchPosts, setReFetchPosts } = useAppContext();
+  const { data: session } = useSession();
   const handlePublishedAt = (date: string) => {
     return format(new Date(date), "h:mm a '·' MMM d, yyyy");
   };
   const handleLikePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -260,6 +268,7 @@ export const PostCard = ({ post, creator, loggedUser }: any) => {
   };
 
   const handleRePost = async (postId: string, userId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -277,6 +286,7 @@ export const PostCard = ({ post, creator, loggedUser }: any) => {
   };
 
   const handleSaveToBookmark = async (postId: string, userId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post`, {
         method: "PATCH",
@@ -294,6 +304,7 @@ export const PostCard = ({ post, creator, loggedUser }: any) => {
   };
 
   const handleDeletePost = async (postId: string) => {
+    if (!session?.user?.email) return;
     try {
       const response = await fetch(`/api/post/${postId.toString()}`, {
         method: "DELETE",

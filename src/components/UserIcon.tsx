@@ -11,7 +11,11 @@ const UserIcon = () => {
   return (
     <>
       {userData && (
-        <div className="p-2 mx-2 flex flex-row justify-between items-center rounded-full text-white hover:bg-[#e7e9ea1a] relative cursor-pointer mb-3">
+        <div
+          className={`${
+            userData.name ? "" : "hidden"
+          } p-2 mx-2 flex flex-row justify-between items-center rounded-full text-white hover:bg-[#e7e9ea1a] relative cursor-pointer mb-3`}
+        >
           <div className="flex items-center gap-3">
             <div>
               <Image

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import EditProfile from "@/components/EditProfile";
 
 const UserPosts = dynamic(() => import("@/components/UserPosts"), {
   ssr: false,
@@ -17,7 +18,7 @@ const UserPosts = dynamic(() => import("@/components/UserPosts"), {
 const MyProfile = () => {
   const { reFetchUsers } = useAppContext();
   const [userData, setUserData] = useState<any>("");
-  const router = useRouter();
+  const [editProfile, setEditProfile] = useState(false);
   const { data: session } = useSession();
 
   const fetchUserData = async (userId: String) => {
@@ -28,7 +29,7 @@ const MyProfile = () => {
   };
 
   useEffect(() => {
-    if (session?.user?.email && reFetchUsers) {
+    if (session?.user?.email) {
       fetchUserData(session?.user?.email as string);
     }
   }, [session?.user?.email, reFetchUsers]);
@@ -68,7 +69,9 @@ const MyProfile = () => {
             alt="user image"
           />
         </div>
-        <button className="white-btn">Edit</button>
+        <button className="white-btn" onClick={() => setEditProfile(true)}>
+          Edit
+        </button>
       </div>
 
       {/* User - Info - Details */}
@@ -76,6 +79,15 @@ const MyProfile = () => {
 
       {/* User - Posts - Replies - Likes */}
       {userData && <UserPosts userId={userData._id} />}
+
+      {editProfile ? (
+        <EditProfile
+          userData={userData}
+          closeBtn={() => setEditProfile(false)}
+        />
+      ) : (
+        ""
+      )}
     </>
   );
 };
