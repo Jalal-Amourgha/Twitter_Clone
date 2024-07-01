@@ -13,13 +13,19 @@ const FollowBar = () => {
   const router = useRouter();
 
   const fetchUsers = async () => {
-    const res = await fetch("/api/user", {
-      headers: {
-        "Cache-Control": "no-store",
-      },
-    });
-    const data = await res.json();
-    setUsers(data);
+    try {
+      const res = await fetch("/api/user", {
+        headers: {
+          "Cache-Control": "no-store",
+        },
+      });
+      const data = await res.json();
+
+      console.log("Fetched users:", data); // Add logging
+      setUsers(data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   useEffect(() => {
