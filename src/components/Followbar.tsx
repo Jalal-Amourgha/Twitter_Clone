@@ -15,7 +15,7 @@ const FollowBar = () => {
   const fetchUsers = async () => {
     try {
       const res = await fetch("/api/user", {
-        cache: "no-store",
+        cache: "no-cache",
       });
       const data = await res.json();
 
