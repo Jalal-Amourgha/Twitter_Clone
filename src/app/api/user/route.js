@@ -7,7 +7,13 @@ export const GET = async (request) => {
 
     const users = await User.find({}).populate("username");
 
-    return new Response(JSON.stringify(users), { status: 200 });
+    const headers = new Headers();
+    headers.set("Cache-Control", "no-store, max-age=0");
+
+    return new Response(JSON.stringify(users), {
+      status: 200,
+      headers: headers,
+    });
   } catch (error) {
     return new Response("Failed to fetch data", { status: 500 });
   }
