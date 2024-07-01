@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 const DisplayPosts = () => {
   const { posts, users, setPosts } = useAppContext();
-  const [loggedUser, setLoggedUser] = useState({ _id: "" });
+  const [loggedUser, setLoggedUser] = useState({ _id: "5555" });
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -24,6 +24,7 @@ const DisplayPosts = () => {
     <div className="flex flex-col">
       {posts &&
         users &&
+        loggedUser &&
         posts
           .slice()
           .reverse()

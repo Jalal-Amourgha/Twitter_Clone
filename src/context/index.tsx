@@ -42,7 +42,6 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     fetchData();
-    console.log(process.env.MONGODB_URI);
   }, []);
 
   useEffect(() => {
