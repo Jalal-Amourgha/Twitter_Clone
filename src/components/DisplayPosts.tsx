@@ -9,16 +9,16 @@ import { useEffect, useState } from "react";
 
 const DisplayPosts = () => {
   const { posts, users, setPosts } = useAppContext();
-  const [loggedUser, setLoggedUser] = useState({ _id: "58455" });
+  const [loggedUser, setLoggedUser] = useState({ _id: "" });
   const { data: session } = useSession();
 
-  // useEffect(() => {
-  //   if (session?.user?.email) {
-  //     setLoggedUser(
-  //       users.find((user: UserProps) => user.email === session?.user?.email)
-  //     );
-  //   }
-  // }, [session?.user?.email]);
+  useEffect(() => {
+    if (session?.user?.email) {
+      setLoggedUser(
+        users.find((user: UserProps) => user.email === session?.user?.email)
+      );
+    }
+  }, [session?.user?.email]);
 
   return (
     <div className="flex flex-col">
