@@ -10,6 +10,8 @@ export const GET = async (request) => {
     const headers = new Headers();
     headers.set("Cache-Control", "no-store, max-age=0");
 
+    console.log(users);
+
     return new Response(JSON.stringify(users), {
       status: 200,
       headers: headers,

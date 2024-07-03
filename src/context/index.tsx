@@ -40,31 +40,31 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     setUsers(data);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  useEffect(() => {
-    if (reFetchPosts) {
-      fetchPosts();
-    }
-  }, [reFetchPosts]);
+  // useEffect(() => {
+  //   if (reFetchPosts) {
+  //     fetchPosts();
+  //   }
+  // }, [reFetchPosts]);
 
-  useEffect(() => {
-    if (reFetchUsers) {
-      fetchUsers();
-    }
-  }, [reFetchUsers]);
+  // useEffect(() => {
+  //   if (reFetchUsers) {
+  //     fetchUsers();
+  //   }
+  // }, [reFetchUsers]);
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      setUserData(
-        users.filter(
-          (user: UserProps) => user.email === session?.user?.email
-        )[0]
-      );
-    }
-  }, [session?.user?.email, users]);
+  // useEffect(() => {
+  //   if (session?.user?.email) {
+  //     setUserData(
+  //       users.filter(
+  //         (user: UserProps) => user.email === session?.user?.email
+  //       )[0]
+  //     );
+  //   }
+  // }, [session?.user?.email, users]);
 
   return (
     <AppContext.Provider
