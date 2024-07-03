@@ -16,7 +16,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
 
   const fetchData = async () => {
-    const res = await fetch("/api/data", {
+    const res = await fetch("/api/data/all", {
       cache: "no-store",
     });
     const data = await res.json();
