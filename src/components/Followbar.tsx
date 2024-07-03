@@ -8,29 +8,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const FollowBar = () => {
-  const { newUser, setNewUser } = useAppContext();
-  const [users, setUsers] = useState([]);
+  const { users } = useAppContext();
   const { data: session } = useSession();
   const router = useRouter();
-
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch(`/api/user/545181511/infos`, {
-        cache: "no-store",
-      });
-      const data = await res.json();
-
-      console.log("Fetched users:", data); // Add logging
-      setUsers(data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-    console.log(newUser);
-  }, [newUser]);
 
   return (
     <>

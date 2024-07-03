@@ -22,7 +22,7 @@ const MyProfile = () => {
   const { data: session } = useSession();
 
   const fetchUserData = async (userId: String) => {
-    const data = await fetch(`/api/user/${userId}/infos`);
+    const data = await fetch(`/api/users/${userId}/infos`);
     const res = await data.json();
 
     return setUserData(res);

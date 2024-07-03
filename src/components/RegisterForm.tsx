@@ -10,7 +10,7 @@ interface RegisterFormProps {
 }
 
 const RegisterForm = ({ closeBtn, handleLogin }: RegisterFormProps) => {
-  const { newUser, setNewUser } = useAppContext();
+  const { reFetchUsers, setReFetchUsers } = useAppContext();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -42,7 +42,7 @@ const RegisterForm = ({ closeBtn, handleLogin }: RegisterFormProps) => {
       console.log(error);
     } finally {
       handleLogin();
-      setNewUser(newUser + 1);
+      setReFetchUsers(reFetchUsers + 1);
     }
   };
 

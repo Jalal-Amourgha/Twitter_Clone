@@ -43,7 +43,7 @@ const UserProfile = ({ params }: PageProps) => {
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(`/api/user/following`, {
+      const response = await fetch(`/api/users/following`, {
         method: "PATCH",
         body: JSON.stringify({
           id1: userData._id,

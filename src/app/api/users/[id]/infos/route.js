@@ -6,7 +6,9 @@ export const GET = async (request, { params }) => {
   try {
     await connectToDB();
 
-    const infos = await User.find({}).populate("username");
+    const infos = await User.findOne({
+      $or: [{ email: params.id }, { username: params.id }],
+    }).populate("username");
 
     return new Response(JSON.stringify(infos), { status: 200 });
   } catch (error) {

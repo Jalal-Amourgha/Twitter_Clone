@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 import { AuthProvider } from "./Providers";
 import { AppWrapper } from "@/context";
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="./favicon.ico" sizes="any" />
       <body className={inter.className}>
         <EdgeStoreProvider>
           <AuthProvider>

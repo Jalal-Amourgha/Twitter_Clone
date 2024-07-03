@@ -39,7 +39,7 @@ const EditProfile = ({ closeBtn, userData }: EditProfileProps) => {
     }
 
     try {
-      const response = await fetch(`/api/user/${userData._id}/infos`, {
+      const response = await fetch(`/api/users/${userData._id}/infos`, {
         method: "PATCH",
         body: JSON.stringify({
           type: "user-info",
