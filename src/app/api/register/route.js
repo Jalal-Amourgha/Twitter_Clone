@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
 
+import { revalidatePath } from "next/cache";
+
 export async function POST(req) {
   try {
     const { email, name, username, password } = await req.json();
@@ -23,6 +25,8 @@ export async function POST(req) {
       img: "https://files.edgestore.dev/kbupit1ufke42s4x/myPublicImages/_public/c8d0630f-b76d-4a47-a879-0525729eabbc.jpg",
       banner: "",
     });
+
+    revalidatePath("/");
 
     return NextResponse.json({ message: "User Registed" }, { status: 201 });
   } catch (error) {
