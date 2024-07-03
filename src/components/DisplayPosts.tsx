@@ -24,6 +24,7 @@ const DisplayPosts = () => {
     <div className="flex flex-col">
       {posts &&
         users &&
+        loggedUser &&
         posts
           .slice()
           .reverse()
