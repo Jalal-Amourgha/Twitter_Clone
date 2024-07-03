@@ -16,7 +16,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
 
   const fetchData = async () => {
-    const res = await fetch("/api/data/all", {
+    const res = await fetch("/api/data/9999/all", {
       cache: "no-store",
     });
     const data = await res.json();
@@ -25,39 +25,9 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     setUsers(data.users);
   };
 
-  const fetchPosts = async () => {
-    const res = await fetch("/api/post", {
-      cache: "no-store",
-    });
-    const data = await res.json();
-
-    setPosts(data);
-  };
-
-  const fetchUsers = async () => {
-    const res = await fetch("/api/users/all", {
-      cache: "no-store",
-    });
-    const data = await res.json();
-
-    setUsers(data);
-  };
-
   useEffect(() => {
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (reFetchPosts) {
-      fetchPosts();
-    }
-  }, [reFetchPosts]);
-
-  useEffect(() => {
-    if (reFetchUsers) {
-      fetchUsers();
-    }
-  }, [reFetchUsers]);
+  }, [reFetchPosts, reFetchUsers]);
 
   useEffect(() => {
     if (session?.user?.email) {
