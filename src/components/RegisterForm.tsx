@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppContext } from "@/context";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
@@ -9,6 +10,7 @@ interface RegisterFormProps {
 }
 
 const RegisterForm = ({ closeBtn, handleLogin }: RegisterFormProps) => {
+  const { newUser, setNewUser } = useAppContext();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -40,6 +42,7 @@ const RegisterForm = ({ closeBtn, handleLogin }: RegisterFormProps) => {
       console.log(error);
     } finally {
       handleLogin();
+      setNewUser(newUser + 1);
     }
   };
 

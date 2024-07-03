@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const FollowBar = () => {
+  const { newUser, setNewUser } = useAppContext();
   const [users, setUsers] = useState([]);
   const { data: session } = useSession();
   const router = useRouter();
@@ -28,7 +29,8 @@ const FollowBar = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+    console.log(newUser);
+  }, [newUser]);
 
   return (
     <>

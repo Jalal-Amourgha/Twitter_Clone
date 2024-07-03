@@ -12,7 +12,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [userData, setUserData] = useState({ _id: "" });
   const [reFetchUsers, setReFetchUsers] = useState(0);
   const [reFetchPosts, setReFetchPosts] = useState(0);
-
+  const [newUser, setNewUser] = useState(0);
   const [reFetchComment, setReFetchComment] = useState(0);
   const { data: session } = useSession();
 
@@ -81,8 +81,9 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         setUserData,
         setReFetchUsers,
         setReFetchPosts,
-
         setReFetchComment,
+        newUser,
+        setNewUser,
       }}
     >
       {children}
