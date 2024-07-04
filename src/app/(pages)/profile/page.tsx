@@ -10,6 +10,7 @@ import { Header } from "@/components/Header";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import EditProfile from "@/components/EditProfile";
+import { UserLoading } from "@/components/Loading";
 
 const UserPosts = dynamic(() => import("@/components/UserPosts"), {
   ssr: false,
@@ -35,7 +36,7 @@ const MyProfile = () => {
   }, [session?.user?.email, reFetchUsers]);
 
   if (!userData) {
-    return <h1 className="text-2xl font-bold text-white">Loading ...</h1>;
+    return <UserLoading />;
   }
 
   return (

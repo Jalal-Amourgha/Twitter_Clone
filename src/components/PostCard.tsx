@@ -22,10 +22,16 @@ import { useAppContext } from "@/context";
 import { useSession } from "next-auth/react";
 
 export const HomePostCard = ({ post, creator, loggedUser }: any) => {
-  const { reFetchPosts, setReFetchPosts } = useAppContext();
+  const {
+    reFetchPosts,
+    setReFetchPosts,
+    deletePost,
+    setDeletePost,
+    editPost,
+    setEditPost,
+  } = useAppContext();
   const [showCopy, setShowCopy] = useState(false);
   const router = useRouter();
-  const [editPost, setEditPost] = useState(false);
   const { data: session } = useSession();
 
   const viewPost = (postId: string, userId: string) => {
@@ -106,6 +112,12 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
     } finally {
       setReFetchPosts(reFetchPosts + 1);
     }
+  };
+
+  const handleEditPost = async (post: string, postId: string) => {
+    if (!session?.user?.email) return;
+    setDeletePost({ visibility: false });
+    setEditPost({ post: post, postId: postId, visibility: true });
   };
 
   return (
@@ -209,7 +221,10 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
             className="absolute top-3 right-2 cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
-              setEditPost(!editPost);
+              setDeletePost({
+                id: post._id,
+                visibility: !deletePost.visibility,
+              });
             }}
           >
             <BiDotsHorizontalRounded className="text-2xl text-neutral-500" />
@@ -218,9 +233,15 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
           ""
         )}
 
-        {editPost ? (
+        {deletePost.visibility && deletePost.id === post._id ? (
           <div className="absolute top-8 right-0 flex flex-col gap-2 w-48 bg-black text-white p-2 rounded-md border-1 border-white">
-            <div className="flex items-center gap-1 cursor-pointer">
+            <div
+              className="flex items-center gap-1 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditPost(post.post, post._id);
+              }}
+            >
               <IoPencil />
               <p>Edit Tweet</p>
             </div>
@@ -303,23 +324,6 @@ export const PostCard = ({ post, creator, loggedUser }: any) => {
     }
   };
 
-  const handleDeletePost = async (postId: string) => {
-    if (!session?.user?.email) return;
-    try {
-      const response = await fetch(`/api/post/${postId.toString()}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
-      }
-      console.log("Post deleted successfully");
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    } finally {
-      setReFetchPosts(reFetchPosts + 1);
-    }
-  };
   return (
     <div className="p-4">
       <div className="grid grid-cols-[60px_calc(100%-70px)] gap-[10px]">

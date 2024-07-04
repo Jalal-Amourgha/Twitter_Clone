@@ -1,12 +1,15 @@
 "use client";
 import { useAppContext } from "@/context";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 
 const UserIcon = () => {
   const { userData } = useAppContext();
   const [showProps, setShowProps] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -35,10 +38,18 @@ const UserIcon = () => {
           </div>
           {showProps ? (
             <div className="absolute top-[-93px] bg-black z-10 right-0 w-[200px] p-2 border-1 border-white text-white text-lg  rounded-lg">
-              <p className="p-2  hover:bg-[#e7e9ea1a] rounded-md">
+              <p
+                className="p-2  hover:bg-[#e7e9ea1a] rounded-md"
+                onClick={() => router.push("/profile")}
+              >
                 View Profile
               </p>
-              <p className="p-2 hover:bg-[#e7e9ea1a] rounded-md">Sign out</p>
+              <p
+                className="p-2 hover:bg-[#e7e9ea1a] rounded-md"
+                onClick={() => signOut()}
+              >
+                Sign out
+              </p>
             </div>
           ) : (
             ""

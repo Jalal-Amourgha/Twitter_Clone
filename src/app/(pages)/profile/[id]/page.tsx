@@ -1,6 +1,7 @@
 "use client";
 
 import { Header } from "@/components/Header";
+import { UserLoading } from "@/components/Loading";
 import UserInfo from "@/components/UserInfo";
 import UserPosts from "@/components/UserPosts";
 import { useAppContext } from "@/context";
@@ -58,7 +59,7 @@ const UserProfile = ({ params }: PageProps) => {
   };
 
   if (loading && selectedUser !== undefined) {
-    return <h1 className="text-white text-2xl font-bold">Loading ....</h1>;
+    return <UserLoading />;
   }
 
   return (

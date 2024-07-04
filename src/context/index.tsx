@@ -13,6 +13,12 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [reFetchUsers, setReFetchUsers] = useState(0);
   const [reFetchPosts, setReFetchPosts] = useState(0);
   const [reFetchComment, setReFetchComment] = useState(0);
+  const [deletePost, setDeletePost] = useState({ id: "", visibility: false });
+  const [editPost, setEditPost] = useState({
+    post: "",
+    postId: "",
+    visibility: false,
+  });
   const { data: session } = useSession();
 
   const fetchData = async () => {
@@ -47,14 +53,17 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         userData,
         reFetchUsers,
         reFetchPosts,
-
         reFetchComment,
+        deletePost,
+        editPost,
         setPosts,
         setUsers,
         setUserData,
         setReFetchUsers,
         setReFetchPosts,
         setReFetchComment,
+        setDeletePost,
+        setEditPost,
       }}
     >
       {children}

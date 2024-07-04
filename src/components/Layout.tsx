@@ -1,10 +1,14 @@
+"use client";
+import { useAppContext } from "@/context";
 import FollowBar from "./Followbar";
 import { MobileSidebar, Sidebar } from "./Sidebar";
 import UserIcon from "./UserIcon";
+import EditPost from "./EditPost";
 interface LayoutProps {
   children: React.ReactNode;
 }
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { editPost } = useAppContext();
   return (
     <div className="h-screen bg-black overflow-x-hidden overflow-y-scroll">
       <div className="container h-full mx-auto xl:px-30 max-w-6xl">
@@ -23,6 +27,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
       <MobileSidebar />
+      {editPost.visibility ? (
+        <EditPost post={editPost.post} postId={editPost.postId} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

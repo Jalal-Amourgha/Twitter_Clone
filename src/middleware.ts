@@ -13,6 +13,8 @@ export async function middleware(req: NextRequest) {
   if (protectedPaths.includes(path) && !token) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
+
+  return NextResponse.next();
 }
 
 export const config = {
