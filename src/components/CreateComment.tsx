@@ -1,9 +1,9 @@
 "use client";
 import { useAppContext } from "@/context";
-import { PostProps, UserProps } from "@/types";
-import { formatDistanceToNowStrict } from "date-fns";
+import { UserProps } from "@/types";
+
 import Image from "next/image";
-import { IoCloseOutline } from "react-icons/io5";
+
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 
@@ -13,7 +13,13 @@ interface CreateCommentProps {
 }
 
 export const PostComment = ({ postId, userId }: CreateCommentProps) => {
-  const { users, reFetchComment, setReFetchComment } = useAppContext();
+  const {
+    users,
+    reFetchComment,
+    setReFetchComment,
+    setReFetchPosts,
+    reFetchPosts,
+  } = useAppContext();
   const createdUser = users.find((user: UserProps) => user._id === userId);
   const [comment, setComment] = useState("");
   const { data: session } = useSession();
@@ -40,6 +46,7 @@ export const PostComment = ({ postId, userId }: CreateCommentProps) => {
     } finally {
       setComment("");
       setReFetchComment(reFetchComment + 1);
+      setReFetchPosts(reFetchPosts + 1);
     }
   };
 

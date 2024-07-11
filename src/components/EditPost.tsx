@@ -4,8 +4,7 @@ import { useAppContext } from "@/context";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 const EditPost = ({ post, postId }: { post: string; postId: string }) => {
-  const { editPost, setEditPost, reFetchPosts, setReFetchPosts } =
-    useAppContext();
+  const { setEditPost, reFetchPosts, setReFetchPosts } = useAppContext();
   const [newPost, setNewPost] = useState(post);
 
   const EditPost = async (e: React.FormEvent<HTMLFormElement>) => {

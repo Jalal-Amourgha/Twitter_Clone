@@ -10,14 +10,13 @@ import {
 } from "react-icons/io5";
 import { RxShare2 } from "react-icons/rx";
 import { TbRepeat } from "react-icons/tb";
-import { FaRegCommentDots } from "react-icons/fa6";
+import { FaRegCommentDots, FaHeart, FaRegHeart } from "react-icons/fa6";
 import { LuLink } from "react-icons/lu";
-import { FaHeart, FaRegHeart } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PostComment } from "./CreateComment";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { PostProps } from "@/types";
+
 import { useAppContext } from "@/context";
 import { useSession } from "next-auth/react";
 
@@ -141,7 +140,9 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
             <p className="text-white text-lg mt-2">{post.post}</p>
             <div className="w-full flex justify-between items-center gap-4 text-neutral-500 mt-5">
               <div
-                className="flex items-center gap-2 hover:text-blue cursor-pointer"
+                className={`${
+                  post.comments.includes(loggedUser._id) ? "text-blue" : ""
+                } flex items-center gap-2 hover:text-blue cursor-pointer`}
                 onClick={() => viewPost(post._id, creator._id)}
               >
                 <FaRegCommentDots size={20} />
@@ -267,6 +268,7 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
 export const PostCard = ({ post, creator, loggedUser }: any) => {
   const { reFetchPosts, setReFetchPosts } = useAppContext();
   const { data: session } = useSession();
+  const router = useRouter();
   const handlePublishedAt = (date: string) => {
     return format(new Date(date), "h:mm a '·' MMM d, yyyy");
   };
@@ -324,6 +326,10 @@ export const PostCard = ({ post, creator, loggedUser }: any) => {
     }
   };
 
+  const viewPost = (postId: string, userId: string) => {
+    return router.push(`/post/${postId}`);
+  };
+
   return (
     <div className="p-4">
       <div className="grid grid-cols-[60px_calc(100%-70px)] gap-[10px]">
@@ -343,11 +349,10 @@ export const PostCard = ({ post, creator, loggedUser }: any) => {
       </div>
       <div className="w-full flex justify-between items-center  text-neutral-500 my-4 py-3 border-y-1 border-neutral-800  ">
         <div
-          className="flex items-center gap-2 hover:text-blue cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            // handleCreateComment();
-          }}
+          className={`${
+            post.comments.includes(loggedUser._id) ? "text-blue" : ""
+          } flex items-center gap-2 hover:text-blue cursor-pointer`}
+          onClick={() => viewPost(post._id, creator._id)}
         >
           <FaRegCommentDots size={20} />
           <span>{post.comments.length}</span>

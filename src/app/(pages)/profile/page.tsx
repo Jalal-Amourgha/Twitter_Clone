@@ -1,6 +1,4 @@
 "use client";
-
-import { FaArrowLeft } from "react-icons/fa6";
 import { useAppContext } from "@/context";
 import Image from "next/image";
 import UserInfo from "@/components/UserInfo";

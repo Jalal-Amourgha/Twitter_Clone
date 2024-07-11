@@ -5,7 +5,6 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { SingleImageDropzone } from "./SingleImageDropzone";
 import { useEdgeStore } from "@/lib/edgestore";
-import { FileX2, ImageUp } from "lucide-react";
 
 interface EditProfileProps {
   closeBtn: () => void;

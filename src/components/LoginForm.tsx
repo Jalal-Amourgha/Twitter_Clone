@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 interface LoginFormProps {
@@ -11,6 +12,7 @@ interface LoginFormProps {
 const LoginForm = ({ closeBtn, handleRegister }: LoginFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,6 +22,9 @@ const LoginForm = ({ closeBtn, handleRegister }: LoginFormProps) => {
         password,
         redirect: false,
       });
+      if (res?.ok) {
+        router.push("/profile");
+      }
     } catch (error) {
       console.error("Error during login:", error);
       console.log("An unexpected error occurred. Please try again.");

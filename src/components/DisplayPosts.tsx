@@ -5,8 +5,6 @@ import { PostProps, UserProps } from "@/types";
 import { HomePostCard } from "./PostCard";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { HomeLoading } from "./Loading";
-import EditPost from "./EditPost";
 
 const DisplayPosts = () => {
   const { posts, users, editPost } = useAppContext();

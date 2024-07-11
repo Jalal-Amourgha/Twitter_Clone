@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Twitter Clone
 
-## Getting Started
+This is a Twitter clone application built with Next.js, TypeScript, Tailwind CSS, Edgestore for storing images, and MongoDB. The application allows users to register, create posts, like, comment, repost, and bookmark posts. Users can also search for other users, follow and unfollow them, and see their posts.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **User Registration**: Users can register an account.
+- **Create Posts**: Authenticated users can create new posts.
+- **Like Posts**: Users can like posts.
+- **Comment on Posts**: Users can comment on posts.
+- **Repost**: Users can repost other users' posts.
+- **Bookmark Posts**: Users can bookmark posts for later viewing.
+- **Search Users**: Users can search for other users by their username.
+- **Follow/Unfollow Users**: Users can follow and unfollow other users and see their posts.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js**: A React framework for server-side rendering and generating static websites.
+- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
+- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
+- **Edgestore**: For storing images.
+- **MongoDB**: A NoSQL database for storing user data, posts, and other application data.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Deployment
 
-## Learn More
+The project is deployed on Vercel. You can view it live at <a href="https://e-tech-chi.vercel.app/" target="_blank">E-Tech.</a>
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Distributed under the MIT License. See `LICENSE` for more information.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Screenshots
 
-## Deploy on Vercel
+<div>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<img src="https://media.discordapp.net/attachments/1260908645395337246/1261032942952513667/c6.JPG?ex=66917bf2&is=66902a72&hm=fad4af7da61bb925d72db321f9bd20e5ba7bd52cce5778f469c3d8ec3ac7b162&=&format=webp&width=744&height=418" width="425" />
+<img src="https://media.discordapp.net/attachments/1260908645395337246/1261032943313358968/c7.JPG?ex=66917bf2&is=66902a72&hm=15e56a346fb986952e3f3792551da6dc5685a1610bdbfd1eccad20fef6d2e0c4&=&format=webp&width=744&height=418" width="425" />
+<img src="https://media.discordapp.net/attachments/1260908645395337246/1261032944244494417/c3.JPG?ex=66917bf2&is=66902a72&hm=a3fcd1536ca682caf244f53ab91f7e81dc6f8f89a310a80cf45fcc425346630e&=&format=webp&width=744&height=418" width="425" />
+<img src="https://media.discordapp.net/attachments/1260908645395337246/1261032942575161454/c5.JPG?ex=66917bf2&is=66902a72&hm=e00181f5980e5c50050cf1c8d81cb4c56d529bc2a60dc830b7836abf83df779c&=&format=webp&width=744&height=418" width="425" />
+<img src="https://media.discordapp.net/attachments/1260908645395337246/1261032943820996608/c1.JPG?ex=66917bf2&is=66902a72&hm=22dd3a2784c2baf9b7dbc2c415c0c640e619ff8886a47820ae9724fb658df5be&=&format=webp&width=744&height=418" width="425" />
+<img src="https://media.discordapp.net/attachments/1260908645395337246/1261032942164250665/c4.JPG?ex=66917bf2&is=66902a72&hm=c06cad54b16d0b2e3f030af038a29d9bda37e678df5d06bd5ee6e414241a6568&=&format=webp&width=744&height=418" width="425" />
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+</div>
