@@ -85,11 +85,13 @@ const PostPage = ({ params }: PostPageProps) => {
   return (
     <>
       <Header title="Post" />
-      <PostCard
-        post={postSelected}
-        creator={createdUser}
-        loggedUser={loggedUser}
-      />
+      <div className="relative">
+        <PostCard
+          post={postSelected}
+          creator={createdUser}
+          loggedUser={loggedUser}
+        />
+      </div>
       <div className="flex flex-col border-t-1 border-neutral-900">
         {comments.map((comment: Comment, index: number) => (
           <CommentCard

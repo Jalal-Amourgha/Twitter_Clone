@@ -30,6 +30,7 @@ const LoginForm = ({ closeBtn, handleRegister }: LoginFormProps) => {
       console.log("An unexpected error occurred. Please try again.");
     } finally {
       closeBtn();
+      router.push("/profile");
     }
   };
 

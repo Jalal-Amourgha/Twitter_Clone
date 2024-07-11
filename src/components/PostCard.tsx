@@ -205,7 +205,16 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
                   }}
                 />
                 {showCopy ? (
-                  <div className="absolute  bottom-10 -right-4 w-48 bg-black text-white p-3 rounded-lg border-1 border-white flex items-center gap-2 link__shadow">
+                  <div
+                    className="absolute  bottom-10 -right-4 w-48 z-50 bg-black text-white hover:text-green p-3 rounded-lg border-1 border-white flex items-center gap-2 link__shadow cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigator.clipboard.writeText(
+                        `https://twitter-clone-five-zeta.vercel.app/post/${post._id}`
+                      );
+                      setShowCopy(!showCopy);
+                    }}
+                  >
                     <LuLink size={20} />
                     <p>Copy link</p>
                   </div>
@@ -268,6 +277,7 @@ export const HomePostCard = ({ post, creator, loggedUser }: any) => {
 export const PostCard = ({ post, creator, loggedUser }: any) => {
   const { reFetchPosts, setReFetchPosts } = useAppContext();
   const { data: session } = useSession();
+  const [showCopy, setShowCopy] = useState(false);
   const router = useRouter();
   const handlePublishedAt = (date: string) => {
     return format(new Date(date), "h:mm a '·' MMM d, yyyy");
@@ -408,16 +418,28 @@ export const PostCard = ({ post, creator, loggedUser }: any) => {
         <RxShare2
           size={20}
           className="hover:text-green  cursor-pointer"
-          // onClick={(e) => {
-          //   e.stopPropagation();
-          //   setShowCopy(!showCopy);
-          // }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowCopy(!showCopy);
+          }}
         />
-        {/* 
-        <div className="absolute  bottom-10 -right-4 w-48 bg-black text-white p-3 rounded-lg border-1 border-white flex items-center gap-2 link__shadow">
-          <LuLink size={20} />
-          <p>Copy link</p>
-        </div> */}
+        {showCopy ? (
+          <div
+            className="absolute  top-[100px] -right-0 w-48 z-50 bg-black text-white hover:text-green p-3 rounded-lg border-1 border-white flex items-center gap-2 link__shadow cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigator.clipboard.writeText(
+                `https://twitter-clone-five-zeta.vercel.app/post/${post._id}`
+              );
+              setShowCopy(!showCopy);
+            }}
+          >
+            <LuLink size={20} />
+            <p>Copy link</p>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <PostComment postId={post._id} userId={loggedUser._id} />
