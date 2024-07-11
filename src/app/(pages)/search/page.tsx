@@ -39,7 +39,7 @@ const SearchPage = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <div className="flex flex-col p-3 mt-10">
+      <div className="flex flex-col p-3 mt-4">
         <h1 className="text-2xl text-white font-semibold mb-5">Result: </h1>
         {smillarUsers.map((user: UserProps) => (
           <div

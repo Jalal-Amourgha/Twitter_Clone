@@ -19,6 +19,7 @@ const MyProfile = () => {
   const [userData, setUserData] = useState<any>("");
   const [editProfile, setEditProfile] = useState(false);
   const { data: session } = useSession();
+  const router = useRouter();
 
   const fetchUserData = async (userId: String) => {
     const data = await fetch(`/api/users/${userId}/infos`);
@@ -32,6 +33,10 @@ const MyProfile = () => {
       fetchUserData(session?.user?.email as string);
     }
   }, [session?.user?.email, reFetchUsers]);
+
+  if (!session?.user?.email) {
+    return router.push("/");
+  }
 
   if (!userData) {
     return <UserLoading />;

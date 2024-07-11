@@ -4,12 +4,15 @@ import { Header } from "@/components/Header";
 import { HomePostCard } from "@/components/PostCard";
 import { useAppContext } from "@/context";
 import { PostProps, UserProps } from "@/types";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const BookmarksPage = () => {
   const { posts, users, userData } = useAppContext();
   const [userBookmarks, setUserBookmarks] = useState([]);
-
+  const { data: session } = useSession();
+  const router = useRouter();
   useEffect(() => {
     if (posts && userData) {
       var bookmarkPosts = posts.filter((post: PostProps) =>
@@ -18,6 +21,10 @@ const BookmarksPage = () => {
       setUserBookmarks(bookmarkPosts);
     }
   }, [posts, userData]);
+
+  if (!session?.user?.email) {
+    return router.push("/");
+  }
 
   return (
     <>

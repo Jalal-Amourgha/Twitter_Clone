@@ -11,7 +11,7 @@ export default function Home() {
   const { posts, users } = useAppContext();
   const { data: session } = useSession();
 
-  if (!posts && !users) {
+  if (!posts || !users) {
     return <HomeLoading />;
   }
 
